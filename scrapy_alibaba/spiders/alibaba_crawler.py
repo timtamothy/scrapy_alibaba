@@ -14,13 +14,13 @@ class AlibabaCrawlerSpider(scrapy.Spider):
     def start_requests(self):
     #Read keywords from keywords file and construct the search URL
     
-        with open(os.path.join(os.path.dirname(__file__), "../resources/keywords.csv")) as search_keywords:
+        with open(os.path.join(os.path.dirname(__file__), "keywords.csv")) as search_keywords:
             for keyword in csv.DictReader(search_keywords):
                 search_text=keyword["keyword"]
                 url="https://www.alibaba.com/trade/search?fsb=y&IndexArea=product_en&CatId=&SearchText={0}&viewtype=G".format(
                     search_text)
-# The meta is used to send our search text into the parser as metadata
-    yield scrapy.Request(url, callback = self.parse, meta = {"search_text": search_text})
+        # The meta is used to send our search text into the parser as metadata
+        yield scrapy.Request(url, callback = self.parse, meta = {"search_text": search_text})
     
     
     
@@ -34,25 +34,17 @@ class AlibabaCrawlerSpider(scrapy.Spider):
     #iterating over search results  
     for product in products:
         #Defining the XPaths
-        XPATH_PRODUCT_NAME  = 
-        ".//div[@class='item-info']//h2[contains(@class,'title')]//a/@title"
-        XPATH_PRODUCT_PRICE =  
-        ".//div[@class='item-info']//div[@class='price']/b/text()"
-        XPATH_PRODUCT_MIN_ORDER = 
-        ".//div[@class='item-info']//div[@class='min-order']/b/text()"
-        XPATH_SELLER_YEARS = 
+        XPATH_PRODUCT_NAME = ".//div[@class='item-info']//h2[contains(@class,'title')]//a/@title"
+        XPATH_PRODUCT_PRICE =  ".//div[@class='item-info']//div[@class='price']/b/text()"
+        XPATH_PRODUCT_MIN_ORDER = ".//div[@class='item-info']//div[@class='min-order']/b/text()"
+        XPATH_SELLER_YEARS = ".//div[@class='item-info']//div[@class='stitle']//div[contains(@class,'s-gold-supplier-year-icon')]//text()"
         #".//div[@class='item-info']//div[@class='stitle util-ellipsis']//div[contains(@class,'supplier-year')]//text()"
-        ".//div[@class='item-info']//div[@class='stitle']//div[contains(@class,'s-gold-supplier-year-icon')]//text()"  
         #XPATH_SELLER_NAME = 
         #".//div[@class='item-info']//div[@class='stitle util-ellipsis']//a/@title"
-        XPATH_SUPPLIER = 
-        ".//div[@class='item-info']//div[@class='stitle']//a/@title"
-        XPATH_SELLER_RESPONSE_RATE = 
-        ".//div[@class='item-info']//div[@class='sstitle']//div[@class='num']/i/text()"
-        XPATH_TRANSACTION_LEVEL = 
-        ".//div[@class='item-info']//div[@class='sstitle']//a[@class='diamond-level-group']//i[contains(@class,'diamond-level-one')]"
-        XPATH_TRANSACTION_LEVEL_FRACTION = 
-        ".//div[@class='item-info']//div[@class='sstitle']//a[@class='diamond-level-group']//i[contains(@class,'diamond-level-half-filled')]"        
+        XPATH_SUPPLIER = ".//div[@class='item-info']//div[@class='stitle']//a/@title"
+        XPATH_SELLER_RESPONSE_RATE = ".//div[@class='item-info']//div[@class='sstitle']//div[@class='num']/i/text()"
+        XPATH_TRANSACTION_LEVEL = ".//div[@class='item-info']//div[@class='sstitle']//a[@class='diamond-level-group']//i[contains(@class,'diamond-level-one')]"
+        XPATH_TRANSACTION_LEVEL_FRACTION = ".//div[@class='item-info']//div[@class='sstitle']//a[@class='diamond-level-group']//i[contains(@class,'diamond-level-half-filled')]"        
         XPATH_PRODUCT_LINK = ".//div[@class='item-info']//h2/a/@href"
         
         
