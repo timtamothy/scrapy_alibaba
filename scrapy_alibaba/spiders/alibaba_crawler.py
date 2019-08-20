@@ -43,8 +43,10 @@ class AlibabaCrawlerSpider(scrapy.Spider):
         XPATH_SELLER_YEARS = 
         #".//div[@class='item-info']//div[@class='stitle util-ellipsis']//div[contains(@class,'supplier-year')]//text()"
         ".//div[@class='item-info']//div[@class='stitle']//div[contains(@class,'s-gold-supplier-year-icon')]//text()"  
-        XPATH_SELLER_NAME = 
-        ".//div[@class='item-info']//div[@class='stitle util-ellipsis']//a/@title"
+        #XPATH_SELLER_NAME = 
+        #".//div[@class='item-info']//div[@class='stitle util-ellipsis']//a/@title"
+        XPATH_SUPPLIER = 
+        ".//div[@class='item-info']//div[@class='stitle']//a/@title"
         XPATH_SELLER_RESPONSE_RATE = 
         ".//div[@class='item-info']//div[@class='sstitle']//div[@class='num']/i/text()"
         XPATH_TRANSACTION_LEVEL = 
@@ -53,17 +55,18 @@ class AlibabaCrawlerSpider(scrapy.Spider):
         ".//div[@class='item-info']//div[@class='sstitle']//a[@class='diamond-level-group']//i[contains(@class,'diamond-level-half-filled')]"        
         XPATH_PRODUCT_LINK = ".//div[@class='item-info']//h2/a/@href"
         
-        XPATH_SUPPLIER = ".//div[@class='item-info']//div[@class='stitle']//a/@title"
+        
 
         raw_product_name = products.xpath(XPATH_PRODUCT_NAME).extract()
         raw_product_price = products.xpath(XPATH_PRODUCT_PRICE).extract_first().strip()
         raw_minimum_order = products.xpath(XPATH_PRODUCT_MIN_ORDER).extract()
         raw_seller_years = products.xpath(XPATH_SELLER_YEARS).extract_first()
-        raw_seller_name = products.xpath(XPATH_SELLER_NAME).extract()
+        #raw_seller_name = products.xpath(XPATH_SELLER_NAME).extract()
+        raw_supplier_name = products.xpath(XPATH_SUPPLIER).extract()
         raw_seller_response_rate = products.xpath(XPATH_SELLER_RESPONSE_RATE).extract()
         raw_transaction_level = products.xpath(XPATH_TRANSACTION_LEVEL).extract()
         raw_product_link = products.xpath(XPATH_PRODUCT_LINK).extract()
-        raw_supplier_name = products.xpath(XPATH_SUPPLIER).extract()
+        
         #getting the fraction part
         raw_transaction_level_fraction = products.xpath(XPATH_TRANSACTION_LEVEL_FRACTION)
 
@@ -72,7 +75,7 @@ class AlibabaCrawlerSpider(scrapy.Spider):
         product_price = ''.join(raw_product_price).strip() if raw_product_price else None
         minimum_order = ''.join(raw_minimum_order).strip() if raw_minimum_order else None
         seller_years_on_alibaba = ''.join(raw_seller_years).strip() if raw_seller_years else None
-        seller_name = ''.join(raw_seller_name).strip() if raw_seller_name else None
+        supplier_name = ''.join(raw_supplier_name).strip() if raw_seller_name else None
         seller_response_rate = ''.join(raw_seller_response_rate).strip() if raw_seller_response_rate else None
         #getting actual transaction levels by adding the fraction part
         transaction_level = len(raw_transaction_level)+.5 if raw_transaction_level_fraction else len(raw_transaction_level)
