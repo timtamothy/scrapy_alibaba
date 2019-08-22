@@ -17,8 +17,7 @@ class AlibabaCrawlerSpider(scrapy.Spider):
         with open(os.path.join(os.path.dirname(__file__), "keywords.csv")) as search_keywords:
             for keyword in csv.DictReader(search_keywords):
                 search_text=keyword["keyword"]
-                url="https://www.alibaba.com/trade/search?fsb=y&IndexArea=product_en&CatId=&SearchText={0}&viewtype=G".format(
-                    search_text)
+                url="https://www.alibaba.com/trade/search?fsb=y&IndexArea=product_en&CatId=&SearchText={0}&viewtype=G".format(search_text)
     # The meta is used to send our search text into the parser as metadata
                 yield scrapy.Request(url, callback = self.parse, meta = {"search_text": search_text})
     
@@ -67,7 +66,7 @@ class AlibabaCrawlerSpider(scrapy.Spider):
             product_price = ''.join(raw_product_price).strip() if raw_product_price else None
             minimum_order = ''.join(raw_minimum_order).strip() if raw_minimum_order else None
             seller_years_on_alibaba = ''.join(raw_seller_years).strip() if raw_seller_years else None
-            supplier_name = ''.join(raw_supplier_name).strip() if raw_seller_name else None
+            supplier_name = ''.join(raw_supplier_name).strip() if raw_supplier_name else None
             seller_response_rate = ''.join(raw_seller_response_rate).strip() if raw_seller_response_rate else None
             #getting actual transaction levels by adding the fraction part
             transaction_level = len(raw_transaction_level)+.5 if raw_transaction_level_fraction else len(raw_transaction_level)

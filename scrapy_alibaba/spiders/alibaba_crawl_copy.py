@@ -5,28 +5,29 @@ import os
 
 
 class AlibabaCrawlerSpider(scrapy.Spider):
-    name = 'alibaba_crawler'
-    allowed_domains = ['alibaba.com']
-    start_urls = ['http://alibaba.com/']
+    name = 'alibaba_crawl_copy'
+    #allowed_domains = ['alibaba.com']
+    #start_urls = ['https://www.alibaba.com/trade/search?fsb=y&IndexArea=product_en&CatId=&SearchText=headphones&viewtype=G&tab=']
     
+    #search_text = "headphones"
     
+    #def start_requests(self):
+    #Read keywords from keywords file and construct the search URL
+    # The meta is used to send our search text into the parser as metadata
+       # start_urls = 'https://www.alibaba.com/trade/search?fsb=y&IndexArea=product_en&CatId=&SearchText=headphones&viewtype=G&tab='
+       # search_text = "headphones"
+       # url = start_urls
+       # yield scrapy.Request(url, callback = self.parse, meta = {"search_text": search_text})
     
     def start_requests(self):
-    #Read keywords from keywords file and construct the search URL
-    
-        with open(os.path.join(os.path.dirname(__file__), "keywords.csv")) as search_keywords:
-            for keyword in csv.DictReader(search_keywords):
-                search_text=keyword["keyword"]
-                url="https://www.alibaba.com/trade/search?fsb=y&IndexArea=product_en&CatId=&SearchText={0}&viewtype=G".format(search_text)
-    # The meta is used to send our search text into the parser as metadata
-                yield scrapy.Request(url, callback = self.parse, meta = {"search_text": search_text})
-    
-    
+        urls = ['https://www.alibaba.com/trade/search?fsb=y&IndexArea=product_en&CatId=&SearchText=headphones&viewtype=G&tab=']
+        for url in urls:
+            yield scrapy.Request(url = url, callback = self.parse)
     
 
     def parse(self, response):
         """Function to process alibaba search results page"""
-        search_keyword = response.meta["search_text"]
+        #search_keyword = response.meta["search_text"]
         parser = scrapy.Selector(response)
         products = parser.xpath("//div[@class='item-main']")
     
@@ -77,9 +78,10 @@ class AlibabaCrawlerSpider(scrapy.Spider):
                 'product_price':product_price,
                 'minimum_order':minimum_order,
                 'seller_years_on_alibaba':seller_years_on_alibaba,
-                'seller_name':seller_name,
+                'supplier_name':supplier_name,
                 'seller_response_rate':seller_response_rate,
                 'transaction_level':transaction_level,
                 'product_link':product_link,
-                'search_text':search_keyword
+                #'search_text':search_keyword
                 }
+
