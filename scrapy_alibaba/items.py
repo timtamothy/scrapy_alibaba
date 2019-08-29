@@ -12,4 +12,6 @@ class ScrapyAlibabaItem(scrapy.Item):
     # define the fields for your item here like:
     product = scrapy.Field()
     supplier = scrapy.Field()
+    years = scrapy.Field()
+    gold = scrapy.Field()
     #pass
