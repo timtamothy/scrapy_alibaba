@@ -25,10 +25,10 @@ class Alibaba_s3(scrapy.Spider):
         for n in gold_status:
             gold_clean.append(n.strip())
         gold_years = sbox.xpath(".//div[@class='s-gold-supplier-year-icon']/text()").extract()
-        trade_assure = sbox.xpath(".//div[@class='company']/a[contains(@data-ta,'item-tips-action')]/text()[2]").extract()
-        trade_clean = []
-        for m in trade_assure:
-            trade_clean.append(m.strip())    
+        #trade_assure = sbox.xpath(".//div[@class='company']/a[contains(@data-ta,'item-tips-action')]/text()[2]").extract()
+        #trade_clean = []
+        #for m in trade_assure:
+        #    trade_clean.append(m.strip())    
         main_product = sbox.xpath(".//div[@class='value ellipsis ph']/@title").extract()
         supplier_url = sbox.xpath(".//h2[contains(@class,'title ellipsis')]/a/@href").extract()
         contacts_url = sbox.xpath(".//a[@class='cd']/@href").extract()
@@ -52,15 +52,18 @@ class Alibaba_s3(scrapy.Spider):
         
         #return load.load_item()
     
-        result = zip(supplier, gold_clean, gold_years, trade_clean, main_product, supplier_url, contacts_url)
+        result = zip(supplier, gold_clean, gold_years, main_product, supplier_url, contacts_url)
         
-        for supplier, gold_clean, gold_years, trade_clean, main_product, supplier_url, contacts_url in result:
+        for supplier, gold_clean, gold_years, main_product, supplier_url, contacts_url in result:
             item = Spider3Item()
             item['business_supplier'] = supplier
             item['gold_status'] = gold_clean
             item['gold_years'] = gold_years
-            item['trade_assurance'] = trade_clean
+            #item['trade_assurance'] = trade_clean
             item['main_products'] = main_product
             item['supplier_url'] = supplier_url
             item['contacts_url'] = contacts_url
             yield item
+            
+        if next_page is not None:
+            yield scrapy.Request(next_page, callback=self.parse)

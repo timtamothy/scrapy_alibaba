@@ -22,7 +22,7 @@ class Spider3Item(scrapy.Item):
     business_supplier = scrapy.Field()
     gold_status = scrapy.Field()
     gold_years = scrapy.Field()
-    trade_assurance = scrapy.Field()
+    #trade_assurance = scrapy.Field()
     main_products = scrapy.Field()
     supplier_url = scrapy.Field()
     contacts_url = scrapy.Field()
