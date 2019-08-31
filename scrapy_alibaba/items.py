@@ -18,7 +18,6 @@ class ScrapyAlibabaItem(scrapy.Item):
     
     
 class Spider2Item(scrapy.Item):
-    category_name = scrapy.Field()
     category_url = scrapy.Field()
     
 

@@ -3,8 +3,6 @@ import scrapy
 from scrapy.loader import ItemLoader
 # import the class Spider2Item from the items file in scrapy_alibaba directory
 from scrapy_alibaba.items import Spider2Item
-from time import sleep
-
 
 class Alibaba_s1(scrapy.Spider):
     name = 'spider1'
@@ -52,20 +50,17 @@ class Alibaba_s1(scrapy.Spider):
         #adding the https://www.alibaba.com to all the scraped URLS
         for url in alpha_s_path_url:
             alpha_supplier_urls.append('https://www.alibaba.com'+url)
-            
         for url in alpha_supplier_urls:
-            print(url)
             yield scrapy.Request(url, callback=self.parse_2)
             
         
     def parse_2(self, response):
         category_urls = response.xpath("//div[@class='colRmargin']/div[contains(@class,'column one4')]/a/@href").extract()
-        category_name = response.xpath("//div[@class='colRmargin']/div[contains(@class,'column one4')]/a/text()").extract()
-        
-        result = zip(category_name, category_urls)
-        for category_name, category_urls in result:
+        #category_name = response.xpath("//div[@class='colRmargin']/div[contains(@class,'column one4')]/a/text()").extract()
+        result = zip(category_urls)
+        for ccategory_urls in result:
             item = Spider2Item()
-            item['category_name'] = category_name
+            #item['category_name'] = category_name
             item['category_url'] = category_urls
             yield item
 
