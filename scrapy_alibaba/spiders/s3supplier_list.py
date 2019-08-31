@@ -3,17 +3,31 @@ import scrapy
 from scrapy.loader import ItemLoader
 # import the class Spider3Item from the items file in scrapy_alibaba directory
 from scrapy_alibaba.items import Spider3Item
+from time import sleep
 
 
 class Alibaba_s3(scrapy.Spider):
     name = 'spider3'
     allowed_domains = ['alibaba.com']
-    start_urls = ['https://www.alibaba.com/a-c-yarns-suppliers.html']
+    start_urls = ['https://www.alibaba.com/suppliers/supplier-A.html']
+    
+    
+    def parse(self, response):
+        
+        category_urls = response.xpath("//div[@class='colRmargin']/div[contains(@class,'column one4')]/a/@href").extract()
+        next_url = 'https://www.alibaba.com'+response.xpath("//a[@class='page_btn']/@href").extract_first()
+        
+        if next_url is not None:
+            yield scrapy.Request(next_url, callback=self.parse)
+        else:
+            for url in category_urls:
+                yield scrapy.Request(url=url, callback=self.parse_supplier)
     
 
-    def parse(self, response):
+    def parse_supplier(self, response):
         # instatiate the ItemLoader with your specific item class
         #load = ItemLoader(item=Spider3Item(), response=response)
+        download_delay = 1.0
         
         parser = scrapy.Selector(response)
         sbox = parser.xpath("//div[@class='item-main']")
@@ -30,27 +44,13 @@ class Alibaba_s3(scrapy.Spider):
         #for m in trade_assure:
         #    trade_clean.append(m.strip())    
         main_product = sbox.xpath(".//div[@class='value ellipsis ph']/@title").extract()
+        for i in main_product:
+            i = i.replace(',',', ')
         supplier_url = sbox.xpath(".//h2[contains(@class,'title ellipsis')]/a/@href").extract()
         contacts_url = sbox.xpath(".//a[@class='cd']/@href").extract()
         
-        next_page = response.xpath("//a[@class='next']/@href").extract()
-
-        #for n in supplier:
-        #    load.add_value('supplier', n)
-        #for n in gold_clean:
-        #    load.add_value('gold_status', n)
-        #for n in gold_years:
-        #    load.add_value('gold_years', n)
-        #for n in trade_clean:
-        #    load.add_value('trade_assurance', n)
-        #for n in main_product:
-        #    load.add_value('main_products', n)
-        #for n in supplier_url:
-        #    load.add_value('supplier_url', n)
-        #for n in contacts_url:
-        #    load.add_value('contacts_url', n)
-        
-        #return load.load_item()
+        next_page = response.xpath("//a[@class='next']/@href").extract_first()
+        next_page = next_page.replace('http','https')
     
         result = zip(supplier, gold_clean, gold_years, main_product, supplier_url, contacts_url)
         
@@ -64,6 +64,8 @@ class Alibaba_s3(scrapy.Spider):
             item['supplier_url'] = supplier_url
             item['contacts_url'] = contacts_url
             yield item
+        
+        sleep(.300)
             
         if next_page is not None:
-            yield scrapy.Request(next_page, callback=self.parse)
+            yield scrapy.Request(next_page, callback=self.parse_supplier)

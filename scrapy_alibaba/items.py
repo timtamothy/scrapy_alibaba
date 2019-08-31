@@ -16,6 +16,10 @@ class ScrapyAlibabaItem(scrapy.Item):
     gold = scrapy.Field()
     #pass
     
+    
+class Spider2Item(scrapy.Item):
+    alphabet = scrapy.Field()
+    
 
 class Spider3Item(scrapy.Item):
     # define fields for your items:
@@ -26,3 +30,6 @@ class Spider3Item(scrapy.Item):
     main_products = scrapy.Field()
     supplier_url = scrapy.Field()
     contacts_url = scrapy.Field()
+    
+    
+
