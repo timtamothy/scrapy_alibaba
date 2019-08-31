@@ -11,30 +11,28 @@ class Alibaba_s2(scrapy.Spider):
     allowed_domains = ['alibaba.com']
     start_urls = ['https://www.alibaba.com/suppliers/supplier-A_1.html']
     
-    
     def parse(self, response):
-       
-        next_urls = response.xpath("//span[@id='PagesBoxPageAll']/a/@href").extract()
-            for i in next_urls:
-                i = 'https://www.alibaba.com'+i
+        #empty list to iterate through in for loop
+        alpha_supplier_urls = []
+        #scraped URL stems from the website (they dont include www.alibaba.com)
+        alpha_s_path_url = response.xpath("//span[@id='PagesBoxPageAll']/a/@href").extract()
+        #adding the https://www.alibaba.com to all the scraped URLS
+        for url in alpha_s_path_url:
+            alpha_supplier_urls.append('https://www.alibaba.com'+url)
+            print(url)
+            
+        for url in alpha_supplier_urls:    
+            yield scrapy.Request(url, callback=self.parse_2)
+            
+        
+    def parse_2(self, response):
         category_urls = response.xpath("//div[@class='colRmargin']/div[contains(@class,'column one4')]/a/@href").extract()
         category_name = response.xpath("//div[@class='colRmargin']/div[contains(@class,'column one4')]/a/text()").extract()
-        
-        
-        print(next_urls)
         
         result = zip(category_name)
         for category_name in result:
             item = Spider2Item()
             item['alphabet'] = category_name
             yield item
-        
-        
-        if next_url is not None:
-            yield scrapy.Request(full_url, callback=self.parse)
-        else:
-            for url in category_urls:
-                print(url)
-    
 
    
