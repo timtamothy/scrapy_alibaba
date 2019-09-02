@@ -58,7 +58,7 @@ class Alibaba_s1(scrapy.Spider):
         category_urls = response.xpath("//div[@class='colRmargin']/div[contains(@class,'column one4')]/a/@href").extract()
         #category_name = response.xpath("//div[@class='colRmargin']/div[contains(@class,'column one4')]/a/text()").extract()
         result = zip(category_urls)
-        for ccategory_urls in result:
+        for category_urls in result:
             item = Spider2Item()
             #item['category_name'] = category_name
             item['category_url'] = category_urls
