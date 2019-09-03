@@ -31,5 +31,23 @@ class Spider3Item(scrapy.Item):
     supplier_url = scrapy.Field()
     contacts_url = scrapy.Field()
     
+class Spider4Item(scrapy.Item):
+    business_supplier2 = scrapy.Field()
+    supplier_url2 = scrapy.Field()
+    rating = scrapy.Field()
+    transactions = scrapy.Field()
+    fulfilment = scrapy.Field()
+    url = scrapy.Field()
+    #all_products = scrapy.Field()
     
-
+    
+class Spider5Item(scrapy.Item):
+    contact_url = scrapy.Field()
+    contact_name = scrapy.Field()
+    address = scrapy.Field()
+    zipcode = scrapy.Field()
+    country = scrapy.Field()
+    province = scrapy.Field()
+    city = scrapy.Field()
+    website = scrapy.Field() 
+    
