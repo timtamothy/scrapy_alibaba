@@ -23,6 +23,7 @@ class Spider2Item(scrapy.Item):
 
 class Spider3Item(scrapy.Item):
     # define fields for your items:
+    category = scrapy.Field()
     business_supplier = scrapy.Field()
     gold_status = scrapy.Field()
     gold_years = scrapy.Field()

@@ -7,7 +7,7 @@ from time import sleep
 import csv
 import pandas as pd
 
-class Alibaba_s3(scrapy.Spider):
+class Alibaba_S4(scrapy.Spider):
     name = 'spider4profile'
     allowed_domains = ['alibaba.com']
     

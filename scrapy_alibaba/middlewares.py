@@ -6,6 +6,11 @@
 # https://doc.scrapy.org/en/latest/topics/spider-middleware.html
 
 from scrapy import signals
+from w3lib.http import basic_auth_header
+
+#class CustomProxyMiddleware(object):
+#    def process_request(object):
+#        request.meta['proxy'] = "https://108.59.14.200:13152"
 
 
 class ScrapyAlibabaSpiderMiddleware(object):
