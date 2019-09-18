@@ -4,11 +4,11 @@ from time import sleep
 import pandas as pd
 
 class Alibaba_S5(scrapy.Spider):
-    name = 's5women'
+    name = 's5health'
     allowed_domains = ['alibaba.com']
     
     def start_requests(self):
-        df = pd.read_csv('/Users/swang/scrapy_alibaba/scrapy_read/women_clean.csv')
+        df = pd.read_csv('/Users/swang/scrapy_alibaba/scrapy_read/health_clean.csv')
         url_list = df.contacts_url.tolist()
         for url in url_list:                
             yield scrapy.Request(url, callback=self.parse #meta = {'proxy': '95.211.175.167:13150'}

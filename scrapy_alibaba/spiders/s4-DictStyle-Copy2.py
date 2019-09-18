@@ -2,13 +2,14 @@
 import scrapy
 from time import sleep
 import pandas as pd
+#scrapy crawl s4women -o /Users/swang/scrapy_alibaba/scrapy_write/womens4.csv
 
 class Alibaba_S4(scrapy.Spider):
-    name = 's4cosmed'
+    name = 's4women'
     allowed_domains = ['alibaba.com']
     
     def start_requests(self):
-        df = pd.read_csv('/Users/swang/scrapy_alibaba/scrapy_read/cosmed_clean.csv')
+        df = pd.read_csv('/Users/swang/scrapy_alibaba/scrapy_read/women_clean.csv')
         url_list = df.supplier_url.tolist()
         for url in url_list:                
             yield scrapy.Request(url, callback=self.parse, #meta = {'proxy': '95.211.175.167:13150'}
@@ -39,5 +40,6 @@ class Alibaba_S4(scrapy.Spider):
         data['supplier_type'] = fulfillment
         
         sleep(.2)
+        
         yield data 
         

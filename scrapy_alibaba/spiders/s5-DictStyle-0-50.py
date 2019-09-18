@@ -14,7 +14,7 @@ class Alibaba_S5(scrapy.Spider):
             yield scrapy.Request(url, callback=self.parse)
 
     def parse(self, response):
-        sleep(1)
+        
         contact_url = response.request.url
         contact_name = response.xpath('//div[@class="contact-name"]/text()').extract()
         contact_dept = response.xpath('//div[@class="contact-department"]/text()').extract()
@@ -36,4 +36,5 @@ class Alibaba_S5(scrapy.Spider):
                 value = 0
             data[category] = value
         
+        sleep(.250)
         yield data

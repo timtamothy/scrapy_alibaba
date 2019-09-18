@@ -3,13 +3,13 @@ import scrapy
 from selenium import webdriver
 from time import sleep
 import pandas as pd
-from selenium.webdriver.chrome.options import Options
-options = Options()
+#from selenium.webdriver.chrome.options import Options
+#options = Options()
 #options.headless = True
 from selenium.common.exceptions import NoSuchElementException
 
 class Alibaba_S6(scrapy.Spider):
-    name = 's6women'
+    name = 's6cosmed'
     allowed_domains = ['alibaba.com']
     start_urls = ['https://login.alibaba.com']
    
@@ -34,7 +34,7 @@ class Alibaba_S6(scrapy.Spider):
         
         data = {}
 
-        df = pd.read_csv('/Users/swang/scrapy_alibaba/scrapy_read/women_clean.csv')
+        df = pd.read_csv('/Users/swang/scrapy_alibaba/scrapy_read/cosmed_clean.csv')
         url_list = df.contacts_url.tolist()
         start_urls = url_list
         for url in start_urls:

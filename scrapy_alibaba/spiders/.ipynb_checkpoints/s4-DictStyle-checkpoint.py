@@ -1,22 +1,18 @@
 # -*- coding: utf-8 -*-
 import scrapy
-from scrapy.loader import ItemLoader
-# import the class Spider4Item from the items file in scrapy_alibaba directory
-from scrapy_alibaba.items import Spider4Item
 from time import sleep
-import csv
 import pandas as pd
 
 class Alibaba_S4(scrapy.Spider):
-    name = 'spider4profile'
+    name = 's4cosmed'
     allowed_domains = ['alibaba.com']
     
     def start_requests(self):
-        df = pd.read_csv('/Users/swang/scrapy_alibaba/supplier_BCleanhttps.csv')
+        df = pd.read_csv('/Users/swang/scrapy_alibaba/scrapy_read/cosmed_clean.csv')
         url_list = df.supplier_url.tolist()
         for url in url_list:                
-            yield scrapy.Request(url, callback=self.parse)
-            sleep(.500)
+            yield scrapy.Request(url, callback=self.parse, #meta = {'proxy': '95.211.175.167:13150'}
+                                )
 
     def parse(self, response):
         
@@ -26,13 +22,22 @@ class Alibaba_S4(scrapy.Spider):
             rating = response.xpath("//div[@class='total-score']/text()").extract()
         else:
             rating = 'None'
+        markets = []    
+        market = response.xpath("//div[@class='main-markets']//div/text()").extract()
+        if market is not None:
+            for i in market:
+                markets.append(i.replace(',', ', '))
         
-        #transactions = response.xpath("//div[@class='transaction-detail-content']/text()").extract_first()
+        fulfillment = response.xpath('//table/tr[1]/td[2]/div/div/div/text()').extract()        
+                
         
         data = {}
         data['supplier_url'] = supplier_url
         data['supplier_name'] = supplier_name
         data['rating'] = rating
-    
+        data['market'] = markets
+        data['supplier_type'] = fulfillment
+        
+        sleep(.2)
         yield data 
-        sleep(.300)
+        

@@ -4,14 +4,15 @@ from time import sleep
 import pandas as pd
 
 class Alibaba_S5(scrapy.Spider):
-    name = 'spider5AB'
+    name = 's5women'
     allowed_domains = ['alibaba.com']
     
     def start_requests(self):
-        df = pd.read_csv('/Users/swang/scrapy_alibaba/Scrapy Data/supplier_names_https.csv')
+        df = pd.read_csv('/Users/swang/scrapy_alibaba/scrapy_read/women_clean.csv')
         url_list = df.contacts_url.tolist()
-        for url in url_list[0:50000]:                
-            yield scrapy.Request(url, callback=self.parse, meta = {'proxy': '95.211.175.167:13150'})
+        for url in url_list:                
+            yield scrapy.Request(url, callback=self.parse #meta = {'proxy': '95.211.175.167:13150'}
+                                )
 
     def parse(self, response):
         contact_url = response.request.url
@@ -41,3 +42,4 @@ class Alibaba_S5(scrapy.Spider):
             data[category] = value
         
         yield data
+        sleep(.250)

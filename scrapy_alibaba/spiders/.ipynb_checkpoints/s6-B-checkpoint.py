@@ -9,7 +9,7 @@ options = Options()
 from selenium.common.exceptions import NoSuchElementException
 
 class Alibaba_S6(scrapy.Spider):
-    name = 'seleniumspiderB'
+    name = 's6women'
     allowed_domains = ['alibaba.com']
     start_urls = ['https://login.alibaba.com']
    
@@ -34,10 +34,10 @@ class Alibaba_S6(scrapy.Spider):
         
         data = {}
 
-        df = pd.read_csv('/Users/swang/scrapy_alibaba/Scrapy Data/supplier_names_https.csv')
+        df = pd.read_csv('/Users/swang/scrapy_alibaba/scrapy_read/women_clean.csv')
         url_list = df.contacts_url.tolist()
         start_urls = url_list
-        for url in start_urls[25000:50000]:
+        for url in start_urls:
             chromedriver.get(url)
             
             
